@@ -2,6 +2,7 @@ import Part from './components/part/Part'
 import { useState, createContext, useEffect } from 'react'
 import './App.css'
 import {Routes, Route} from 'react-router-dom'
+import Vendors from './components/vend/Vendors'
 import Parts from './components/part/Parts'
 import Navbar from './components/nav/Navbar'
 import Login from './components/user/Login'
@@ -66,6 +67,7 @@ useEffect(() => {
               <Route element={<Register />} path='/register' />
               <Route element={<Parts />} path='/parts' />
               <Route element={<Part />} path='/parts/:sku' />
+              <Route element={<Vendors />} path='/vend' />
             </Routes> 
             </>
             }
