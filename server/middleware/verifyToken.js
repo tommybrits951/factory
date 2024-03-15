@@ -10,7 +10,6 @@ async function checkAccess(req, res, next) {
             
             res.status(401).json({message: "Not Authorized"})
         }
-
         next()
     } catch (err) {
         next(err)

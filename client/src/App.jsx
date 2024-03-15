@@ -1,6 +1,8 @@
+import Part from './components/part/Part'
 import { useState, createContext, useEffect } from 'react'
 import './App.css'
 import {Routes, Route} from 'react-router-dom'
+import Parts from './components/part/Parts'
 import Navbar from './components/nav/Navbar'
 import Login from './components/user/Login'
 import Register from "./components/user/Register"
@@ -29,7 +31,7 @@ function App() {
     }
   }  
   function checkLogin() {
-    if (token === null) {
+    
       axios.get("http://localhost:9000/auth", {
         withCredentials: true,
         baseURL: "http://localhost:9000",
@@ -39,15 +41,10 @@ function App() {
         setToken(res.data)
       })
       .catch(err => console.error(err))
-    } else {
-      return null
-    }
+    
   }
 useEffect(() => {
-  checkLogin()
-}, [])
-useEffect(() => {
-  checkLogin()
+  
 }, [token])
   return (
     <main onClick={openMenu} className='absolute h-full w-full bg-slate-700'>
@@ -67,6 +64,8 @@ useEffect(() => {
             <Routes>
               <Route element={<Home />} path='/' />
               <Route element={<Register />} path='/register' />
+              <Route element={<Parts />} path='/parts' />
+              <Route element={<Part />} path='/parts/:sku' />
             </Routes> 
             </>
             }

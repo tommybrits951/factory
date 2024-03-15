@@ -6,6 +6,7 @@ const server = express()
 const cookieParser = require("cookie-parser")
 const PORT = process.env.PORT || 9000
 const authRouter = require("./routes/authRouter")
+const partRouter = require("./routes/partRouter")
 const userRouter = require("./routes/userRouter")
 const dbConnect = require("./config/dbConnect")
 
@@ -16,6 +17,8 @@ server.use(cors({
     credentials: true,
     origin: "http://localhost:5173",
 }))
+
+
 server.use(express.json())
 server.use(cookieParser(JSON.stringify(process.env.REFRESH_SECRET)))
 
@@ -23,6 +26,7 @@ server.use(cookieParser(JSON.stringify(process.env.REFRESH_SECRET)))
 
 
 
+server.use("/parts", partRouter)
 server.use("/user", userRouter)
 server.use('/auth', authRouter)
 

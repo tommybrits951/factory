@@ -33,7 +33,7 @@ export default function Register() {
         withCredentials: true,
         baseURL: "http://localhost:9000",
         headers: {
-          authorization: `Bearer`
+          authorization: token
         }
       })
       .then(res => {

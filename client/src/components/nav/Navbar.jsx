@@ -3,7 +3,7 @@ import { Factory } from '../../App'
 import {Link} from 'react-router-dom'
 
 
-const menuItems = [{name: "Home", path: 'home'}, {name: "New Employee", path: "register"}]
+const menuItems = [{name: "Home", path: 'home'}, {name: "New Employee", path: "register"}, {name: "Parts Catalog", path: "parts"}]
 
 
 export default function Navbar() {
@@ -15,12 +15,12 @@ export default function Navbar() {
   }
 
     return (
-    <header className='fixed top-0 left-0 z-10 w-full bg-black'>
-        <button title='open' onClick={menuHandle} className='text-white text-2xl'>&#9776;</button>
+    <header className='fixed top-0 p-2 left-0 z-10 w-full bg-black'>
+        <button title='open' onClick={menuHandle} className='text-white text-2xl hover:scale-110'>&#9776;</button>
       {menu === false ? null : <ul className='absolute bg-slate-950 text-white p-2 rounded-xl'>
         {menuItems.map((itm, idx) => {
           return(
-            <li key={idx} className='m-2 text-xl font-mono underline hover:scale-110'>
+            <li key={idx} className='m-2 text-xl font-serif underline hover:scale-110'>
               <Link to={`/${itm.path}`}>{itm.name}</Link>
             </li>
           )
