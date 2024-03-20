@@ -1,12 +1,12 @@
-const router = require("express").Router()
-const controller = require("../controllers/vendorControl")
+const router = require("express").Router();
+const controller = require("../controllers/vendorControl");
+const { checkToken } = require("../middleware/verifyJWT");
+router
+  .route("/")
+  .get(controller.getAllVendors)
+  .post(checkToken, controller.addVendor)
+  .patch(checkToken, controller.updateVendor);
 
-router.route("/")
-.get(controller.getAllVendors)
-.post(controller.addVendor)
+router.get("/:id", controller.getVendor);
 
-router.get("/:name", controller.getVendor)
-
-
-
-module.exports = router
+module.exports = router;

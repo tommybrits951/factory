@@ -1,9 +1,9 @@
 const router = require("express").Router()
-const verifyToken = require("../middleware/verifyToken")
+const {checkToken} = require("../middleware/verifyJWT")
 const controller = require("../controllers/userControl")
 
 
-router.route("/").get(controller.getAll).post(verifyToken.checkAccess, controller.insertUser)
+router.route("/").get(controller.getAll).post(checkToken, controller.insertUser)
 
 
 module.exports = router

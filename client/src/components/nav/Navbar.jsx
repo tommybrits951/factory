@@ -3,7 +3,7 @@ import { Factory } from '../../App'
 import {Link} from 'react-router-dom'
 
 
-const menuItems = [{name: "Home", path: 'home'}, {name: "New Employee", path: "register"}, {name: "Parts Catalog", path: "parts"}, {name: "Vendors", path: "vend"}]
+const menuItems = [{name: "Home", path: ''}, {name: "New Employee", path: "register"}, {name: "Parts Catalog", path: "parts"}, {name: "Vendors", path: "vend"}]
 
 
 export default function Navbar() {

@@ -1,10 +1,15 @@
 require("dotenv").config()
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
-const Auth = require("../models/Auth")
+
 const User = require("../models/User")
 const refreshSecret = process.env.REFRESH_SECRET
 const accessSecret = process.env.ACCESS_SECRET
+
+
+
+
+
 
 function buildRefresh(user) {
     const payload = {
@@ -51,11 +56,11 @@ async function login(req, res, next) {
     }
     const refreshToken = buildRefresh(user)
     const accessToken = buildAccess(user)    
+    
     res.cookie("jwt", refreshToken, {
         httpOnly: true,
         sameSite: "none",
         secure: true,
-        signed: true,
         maxAge: 60 * 60 * 24 * 1000 
     })
     res.status(200).json({accessToken})
@@ -63,40 +68,38 @@ async function login(req, res, next) {
         next(err)
     }
 }
-async function checkCookie(req, res, next) {
-    try {
-        const cookie = req.cookies.jwt
-        console.log(req.cookies)
-        console.log(cookie)
-        if (!cookie) {
-            return res.status(400).json({message: "Not Logged In"})
-        } 
-        const verified = jwt.verify(cookie, refreshSecret)
-        if (!verified) {
-            return res.status(400).json({message: "Bitch! Who da fuck is you?"})
-        }
 
-        const {username} = jwt.decode(cookie, refreshSecret)
-        const user = await User.findOne({username}).lean().exec()
-        if (!user) {
-            res.status(400).json({message: "Homie inside says he dont know you."})
-        } 
+
+async function refreshHandle(req, res, next) {
+    try {
+        const refreshToken = req.cookies.jwt
+        if (!refreshToken) res.status(401)
+        console.log(refreshToken)
+        const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET) 
+        console.log(decoded)
+        const user = await User.find({username: decoded.username})
         const accessToken = buildAccess(user)
-        const refreshToken = buildAccess(user)
-        res.cookie("jwt", refreshToken, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "none",
-            signed: true,
-            maxAge: 24 * 60 * 60 * 1000         
-        })
-        res.json({accessToken})
+        res.status(200).json(accessToken)
     } catch (err) {
         next(err)
     }
-}
+}   
+
+async function checkAccess(req, res, next) {
+    try {
+        const token = req.headers.Authorization
+        const decoded = jwt.decode(token, process.env.ACCESS_SECRET)
+        res.json(decoded.role)
+    } catch (err) {
+        next(err)
+    }
+} 
+
 
 module.exports = {
  login,
- checkCookie,
+ refreshHandle,
+ buildAccess,
+ buildRefresh,
+ checkAccess
 }

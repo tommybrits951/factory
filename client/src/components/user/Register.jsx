@@ -18,7 +18,7 @@ const initForm = {
 
 export default function Register() {
   const [formData, setFormData] = useState(initForm)
-  const {token} = useContext(Factory)
+  const {token, role} = useContext(Factory)
 
     function change(e) {
       const {name, value} = e.target
@@ -31,10 +31,7 @@ export default function Register() {
       const user = {...formData}
       axios.post("http://localhost:9000/user", user, {
         withCredentials: true,
-        baseURL: "http://localhost:9000",
-        headers: {
-          authorization: token
-        }
+        baseURL: "http://localhost:9000"
       })
       .then(res => {
         console.log(res.data)
@@ -49,39 +46,41 @@ export default function Register() {
 
 
   return (
-    <section className='absolute'>
-      <h2>New Employee</h2>
-      <form onSubmit={submit}>
-        <h3>First Name</h3>
-        <input type='text' name='first_name' value={formData.first_name} onChange={change} required/>
-        <h3>Last Name</h3>
-        <input type='text' name='last_name' value={formData.last_name} onChange={change} required/>
-        <h3>Date of Birth</h3>
-        <input type='date' name='dob' value={formData.dob} onChange={change} required/>
-        <h3>Gender</h3>
-        <select name='gender' onChange={change} value={formData.gender} >
-          <option value={"Private"}/>
-          <option value={"Male"}/>
-          <option value={"Female"}/>
+    <section className='absolute w-full pt-16'>
+      {role !== "Employee" ? 
+      <form onSubmit={submit} className='relative text-center border-2 rounded-xl bg-stone-900 left-1/4 w-2/4'>
+      <h2 className='text-white text-4xl underline m-1'>New Employee</h2>
+        <h3 className='text-white text-lg mt-1 font-mono '>First Name</h3>
+        <input className='text-lg px-1 rounded-lg' type='text' name='first_name' value={formData.first_name} onChange={change} required/>
+        <h3 className='text-white text-lg mt-1 font-mono '>Last Name</h3>
+        <input className='text-lg px-1 rounded-lg' type='text' name='last_name' value={formData.last_name} onChange={change} required/>
+        <h3 className='text-white text-lg mt-1 font-mono '>Date of Birth</h3>
+        <input className='text-lg px-1 rounded-lg' type='date' name='dob' value={formData.dob} onChange={change} required/>
+        <h3 className='text-white text-lg mt-1 font-mono '>Gender</h3>
+        <select name='gender' className='text-lg rounded-lg' onChange={change} value={formData.gender} >
+          <option value={"Private"}>Private</option>
+          <option value={"Male"}>Male</option>
+          <option value={"Female"}>Female</option>
         </select>
-      <h3>Phone</h3>
-      <input type='number' placeholder='e.g. 5555555555' name='phone' value={formData.phone} onChange={change} required/>
-      <h3>Email</h3>
-      <input type='email' name='email' value={formData.email} onChange={change} required/>
-      <h3>Username</h3>
-      <input type='text' name='username' value={formData.username} onChange={change} required/>
-      <h3>Password</h3>
-      <input type='password' name='password' value={formData.password} onChange={change} required minLength={6} />
-      <h3>Role</h3>
-      <select name='role' value={formData.role} onChange={change}>
+      <h3 className='text-white text-lg mt-1 font-mono '>Phone</h3>
+      <input className='text-lg px-1 rounded-lg' type='number' placeholder='e.g. 5555555555' name='phone' value={formData.phone} onChange={change} required/>
+      <h3 className='text-white text-lg mt-1 font-mono '>Email</h3>
+      <input className='text-lg px-1 rounded-lg' type='email' name='email' value={formData.email} onChange={change} required/>
+      <h3 className='text-white text-lg mt-1 font-mono '>Username</h3>
+      <input className='text-lg px-1 rounded-lg' type='text' name='username' value={formData.username} onChange={change} required/>
+      <h3 className='text-white text-lg mt-1 font-mono '>Password</h3>
+      <input className='text-lg px-1 rounded-lg' type='password' name='password' value={formData.password} onChange={change} required minLength={6} />
+      <h3 className='text-white text-lg mt-1 font-mono '>Role</h3>
+      <select name='role' value={formData.role} className='text-lg rounded-lg' onChange={change}>
         <option value={"Employee"}>Employee</option>
         <option value={"Manager"}>Manager</option>
         <option value={"Admin"}>Admin</option>
       </select>
       <br />
-  <button type='submit'>Submit</button>
-  <button onClick={clear}>Clear</button>
+  <button onClick={clear} className='text-white bg-stone-500 px-2 py-1 rounded-lg m-3'>Clear</button>
+  <button type='submit' className='text-white bg-cyan-500 px-2 py-1 rounded-lg m-3'>Submit</button>
       </form>
+    : <h2 className='text-6xl underline mt-36 text-red-600 font-serif text-center'>You Are Not Authorized!</h2>}
     </section>
   )
 }
