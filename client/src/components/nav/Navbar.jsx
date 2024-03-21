@@ -1,18 +1,21 @@
 import {useContext} from 'react'
 import { Factory } from '../../App'
 import {Link} from 'react-router-dom'
+import { jwtDecode } from 'jwt-decode'
 
 
-const menuItems = [{name: "Home", path: ''}, {name: "New Employee", path: "register"}, {name: "Parts Catalog", path: "parts"}, {name: "Vendors", path: "vend"}]
 
 
 export default function Navbar() {
-    const {menu, openMenu} = useContext(Factory)
-
-    
+  const {menu, openMenu, token, logoutUser} = useContext(Factory)
+  const {role} = jwtDecode(token)
+  const menuItems = [{name: "Home", path: ''}, {name: "Parts Catalog", path: "parts"}, {name: "Vendors", path: "vend"}, role !== "Employee" ? {name: "New Employee", path: "register"} : null]
   function menuHandle(e) {
     return openMenu(e)
   }
+    function logout() {
+      return logoutUser()
+    }
 
     return (
     <header className='fixed top-0 p-2 left-0 z-10 w-full bg-black'>
@@ -26,6 +29,7 @@ export default function Navbar() {
           )
         })}
         </ul>}
+        <button className='text-white' onClick={logout}>Logout</button>
     </header>
   )
 }

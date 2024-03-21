@@ -5,6 +5,7 @@ const cors = require("cors");
 const server = express();
 const cookieParser = require("cookie-parser");
 const PORT = process.env.PORT || 9000;
+const { logger } = require("./middleware/logger");
 const authRouter = require("./routes/authRouter");
 const partRouter = require("./routes/partRouter");
 const vendorRouter = require("./routes/vendorRouter");
@@ -22,6 +23,7 @@ server.use(
 );
 
 server.use(express.json());
+server.use(logger);
 server.use(cookieParser(JSON.stringify(process.env.REFRESH_SECRET)));
 
 server.use("/parts", partRouter);

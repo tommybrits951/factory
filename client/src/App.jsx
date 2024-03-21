@@ -30,7 +30,17 @@ function App() {
     setDecodedToken({first_name, last_name, role})
     return setToken(token)
   }
-
+function logoutUser() {
+  axios.get("http://localhost:9000/auth/logout", {
+    withCredentials: true,
+    baseURL: "http://localhost:9000"
+  })
+  .then(res => {
+    console.log(res.data)
+    setToken(res.data.token)
+  })
+  .catch(err => console.log(err))
+}
   function openMenu(e) {
     const {title} = e.target
     if (title === "open") {
@@ -42,21 +52,6 @@ function App() {
 
 
 
-  function checkLogin() {
-      axios.get("http://localhost:9000/auth", {
-        withCredentials: true,
-        baseURL: "http://localhost:9000",
-        headers: {
-          Authorization: token
-        }
-      })
-      .then(res => {
-        
-        setToken(res.data)
-      })
-      .catch(err => console.error(err))
-    
-  }
 useEffect(() => {
   axios.get("http://localhost:9000/auth", {
     withCredentials: true,
@@ -76,6 +71,7 @@ useEffect(() => {
               assignToken,
               token,
               provinceList,
+              logoutUser
             }}>
 
             {token === null ? 
