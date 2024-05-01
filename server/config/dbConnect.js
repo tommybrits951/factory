@@ -1,7 +1,7 @@
-const mongoose = require("mongoose")
+require("dotenv").config;
 
+const knex = require("knex");
+const config = require("../knexfile");
+const env = process.env.NODE_ENV || "development";
 
-function dbConnect() {
-    mongoose.connect("mongodb://localhost:27017/factory")
-}
-module.exports = dbConnect
+module.exports = knex(config[env]);

@@ -1,42 +1,24 @@
-const mongoose = require("mongoose");
+const db = require("../config/dbConnect");
 
-const vendorSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  street: {
-    type: String,
-    required: true
-  },
-  city: {
-    type: String,
-    required: true
-  },
-  province: {
-    type: String,
-    default: "California"
-  },
-  postal: {
-    type: Number,
-    required: true
-  },
-  phone: {
-    type: Number,
-    required: true
-  },
-  email: {
-    type: String,
-    required: true
-  },
-  product: {
-    type: String,
-    default: "Material"
-  },
-  date_added: {
-    type: Date,
-    default: new Date()
-  }
-});
+async function getAllVendors() {
+  return await db("vendors");
+}
 
-module.exports = mongoose.model("Vendor", vendorSchema);
+async function getVendorById(id) {
+  const vendor = await db("vendors").where("vendor_id", id).first();
+  return vendor;
+}
+
+async function insertVendor(vendor) {
+  let vendor_id = await db("vendors").insert(vendor).returning("vendor_id");
+  console.log(vendor_id);
+
+  const result = getVendorById({ vendor_id });
+  return result;
+}
+
+module.exports = {
+  getAllVendors,
+  insertVendor,
+  getVendorById
+};

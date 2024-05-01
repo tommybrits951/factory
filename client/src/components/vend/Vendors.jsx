@@ -65,7 +65,7 @@ export default function Vendors() {
                     {vendors.map((vend, idx) => {
                 return (
                     <li key={idx} className="w-full border-2 p-1 bg-black hover:scale-95 rounded-xl">
-                        <Link to={`/vend/:${idx}`} className="w-full grid grid-cols-2 text-white">
+                        <Link to={`/vend/${idx}`} className="w-full grid grid-cols-2 text-white">
                         <div className="col-start-1">
                             <h3 className="underline">Company</h3>
                             <p>{vend.name}</p>

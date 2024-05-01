@@ -2,17 +2,17 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { logEvent } = require("../middleware/logger");
-const User = require("../models/User");
+const Users = require("../models/Users");
 const refreshSecret = process.env.REFRESH_SECRET;
 const accessSecret = process.env.ACCESS_SECRET;
 
 function buildRefresh(user) {
   const payload = {
-    subject: user._id,
+    subject: user.user_id,
     username: user.username,
     first_name: user.first_name,
     last_name: user.last_name,
-    role: user.role
+    role_id: user.role_id
   };
   const options = {
     expiresIn: "1d"
@@ -22,12 +22,13 @@ function buildRefresh(user) {
 
 function buildAccess(user) {
   const payload = {
-    subject: user._id,
+    subject: user.user_id,
     username: user.username,
     first_name: user.first_name,
     last_name: user.last_name,
-    role: user.role
+    role_id: user.role_id
   };
+  console.log(payload)
   const options = {
     expiresIn: "1h"
   };
@@ -40,12 +41,14 @@ async function login(req, res, next) {
     if (!username || !password) {
       return res.status(400).json({ message: "username password required" });
     }
-
-    const user = await User.findOne({ username }).lean().exec();
+    const user = await Users.getUserByUsername(username);
     const match = await bcrypt.compare(password, user.password);
     if (!match || !user) {
-      res.status(401).json({ message: "username or password incorrect" });
+      return res
+        .status(401)
+        .json({ message: "username or password incorrect" });
     }
+    console.log(user)
     const refreshToken = buildRefresh(user);
     const accessToken = buildAccess(user);
 
@@ -57,7 +60,7 @@ async function login(req, res, next) {
     });
     res.status(200).json({ accessToken });
     logEvent(
-      `${user.username}\t${user.first_name}${user.last_name}\t${user.role}\t${req.headers.origin}\t${req.url}`,
+      `${user.username}\t${user.first_name}${user.last_name}\t${user.role_id}\t${req.headers.origin}\t${req.url}`,
       "loginLog.log"
     );
   } catch (err) {
@@ -68,11 +71,14 @@ async function login(req, res, next) {
 async function refreshHandle(req, res, next) {
   try {
     const refreshToken = req.cookies.jwt;
-    if (!refreshToken) res.status(401);
-    console.log(refreshToken);
+    
+    if (!refreshToken) {
+      res.status(401);
+    }
     const decoded = jwt.verify(refreshToken, process.env.REFRESH_SECRET);
-    console.log(decoded);
-    const user = await User.find({ username: decoded.username });
+    const user = await Users.getUserByUsername(parseInt(decoded.username));
+    console.log(user)
+    
     const accessToken = buildAccess(user);
     res.status(200).json(accessToken);
   } catch (err) {

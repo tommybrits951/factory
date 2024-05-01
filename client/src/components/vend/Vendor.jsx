@@ -17,7 +17,5 @@ export default function Vendor() {
         .catch(err => console.error(err))
     }, [])
 
-    return (
-    <section className='absolute h-full w-full'>{vendor.name}</section>
-  )
+    return (<section></section>)
 }

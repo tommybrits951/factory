@@ -1,12 +1,6 @@
 const router = require("express").Router();
-const controller = require("../controllers/partControl");
+const controller = require("../controllers/partsListControl");
 const { checkToken } = require("../middleware/verifyJWT");
-router
-  .route("/")
-  .get(controller.getParts)
-  .post(checkToken, controller.insertPart)
-  .patch(checkToken, controller.updatePart);
-
-router.get("/:sku", controller.getPart);
+router.route("/").get(controller.getPartList);
 
 module.exports = router;

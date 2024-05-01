@@ -8,8 +8,8 @@ import { jwtDecode } from 'jwt-decode'
 
 export default function Navbar() {
   const {menu, openMenu, token, logoutUser} = useContext(Factory)
-  const {role} = jwtDecode(token)
-  const menuItems = [{name: "Home", path: ''}, {name: "Parts Catalog", path: "parts"}, {name: "Vendors", path: "vend"}, role !== "Employee" ? {name: "New Employee", path: "register"} : null]
+  const {role_id} = jwtDecode(JSON.stringify(token))
+  const menuItems = [{name: "Home", path: ''}, {name: "Parts Catalog", path: "parts"}, {name: "Vendors", path: "vend"}, role_id !== 1 ? {name: "New Employee", path: "register"} : null]
   function menuHandle(e) {
     return openMenu(e)
   }
@@ -29,7 +29,7 @@ export default function Navbar() {
           )
         })}
         </ul>}
-        <button className='text-white' onClick={logout}>Logout</button>
+        <button className='absolute text-white right-5' onClick={logout}>Logout</button>
     </header>
   )
 }

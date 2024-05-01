@@ -19,12 +19,12 @@ export default function Login() {
   }
   function submit(e) {
     e.preventDefault()
-    axios.post("http://localhost:9000/auth", formData, {
+    const user = {...formData, username: parseInt(formData.username)}
+    axios.post("http://localhost:9000/auth", user, {
       withCredentials: true,
       baseURL: "http://localhost:9000"
     })
     .then(res => {
-      console.log(res.data.accessToken)
       assignToken(res.data.accessToken)    
     })
     .catch(err => console.error(err))

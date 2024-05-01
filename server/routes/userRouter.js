@@ -1,9 +1,7 @@
-const router = require("express").Router()
-const {checkToken} = require("../middleware/verifyJWT")
-const controller = require("../controllers/userControl")
+const router = require("express").Router();
+const { checkToken } = require("../middleware/verifyJWT");
+const controller = require("../controllers/userControl");
 
+router.route("/").post(controller.registerUser).get(controller.getAllUsers);
 
-router.route("/").get(controller.getAll).post(checkToken, controller.insertUser)
-
-
-module.exports = router
+module.exports = router;
