@@ -46,16 +46,6 @@ function App() {
     })
     .catch(err => console.log(err))
   }
-  function getVedorsList() {
-    axios.get("http://localhost:9000/vend", {
-      withCredentials: true,
-      baseURL: "http://localhost:9000"
-    })
-    .then(res => {
-      setVendorsList(res.data)
-    })
-    .catch(err => console.log(err))
-  }
 
 
 
@@ -103,7 +93,6 @@ useEffect(() => {
     .catch(err => console.log(err))
  
      getPartsList() 
-    getVedorsList()
 }, [])
   return (
     <main onClick={openMenu} className='absolute h-full w-full bg-slate-700'>

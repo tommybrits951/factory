@@ -7,23 +7,14 @@ exports.up = function (knex) {
     .createTable("materials_list", (tbl) => {
       tbl.increments("material_id").primary();
       tbl.string("material_name").notNullable();
-      tbl
-        .integer("material_vendor_id")
-        .unsigned()
-        .references("vendor_id")
-        .inTable("vendors");
+      
       tbl.string("material_description");
     })
     .createTable("parts_list", (tbl) => {
       tbl.increments("part_id").primary();
       tbl.string("part_name").notNullable();
       tbl.integer("cavities").notNullable();
-      tbl.decimal("cycle").notNullable();
-      tbl
-        .integer("mold_maker_id")
-        .unsigned()
-        .references("vendor_id")
-        .inTable("vendors");
+      tbl.decimal("cycle").notNullable()
       tbl
         .integer("material_id")
         .unsigned()

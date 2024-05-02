@@ -4,14 +4,13 @@
  */
 exports.seed = async function (knex) {
   // Deletes ALL existing entries
-  await knex("parts_list").del();
-  await knex("parts_list").insert([
+  await knex('parts_list').del()
+  await knex('parts_list').insert([
     {
       part_id: 1,
-      part_name: "2 pin female",
+      part_name: '2 pin female',
       cavities: 12,
       cycle: 76.5,
-      mold_maker_id: 1,
       material_id: 2,
       material2_id: 1,
       part_weight: 5,
@@ -21,10 +20,9 @@ exports.seed = async function (knex) {
     },
     {
       part_id: 2,
-      part_name: "2 pin male",
+      part_name: '2 pin male',
       cavities: 6,
       cycle: 90.6,
-      mold_maker_id: 1,
       material_id: 3,
       material2_id: 1,
       part_weight: 5,
@@ -34,10 +32,9 @@ exports.seed = async function (knex) {
     },
     {
       part_id: 3,
-      part_name: "three pi female",
+      part_name: 'three pi female',
       cavities: 10,
       cycle: 125.3,
-      mold_maker_id: 1,
       material_id: 2,
       material2_id: 1,
       part_weight: 5,
@@ -45,5 +42,5 @@ exports.seed = async function (knex) {
       part_sku: 10003,
       mold_number: 204
     }
-  ]);
-};
+  ])
+}
