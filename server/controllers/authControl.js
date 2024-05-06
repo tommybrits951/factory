@@ -37,7 +37,7 @@ function buildAccess(user) {
 async function login(req, res, next) {
   try {
     const { username, password } = req.body;
-
+    console.log(req.body)
     if (!username || !password) {
       return res.status(400).json({ message: "username password required" });
     }
@@ -85,10 +85,25 @@ async function refreshHandle(req, res, next) {
   }
 }
 
-async function checkAccess(req, res, next) {
+async function decodeAccess(req, res, next) {
   try {
     const token = req.headers.Authorization;
     const decoded = jwt.decode(token, process.env.ACCESS_SECRET);
+    if (!token) {
+      const refreshToken = req.cookies.jwt
+      const verified = jwt.verify(refreshToken, refreshSecret)
+      if (!refreshToken || !verified) {
+        return res.status(401).json({message: "Not Authorized!"})
+      }
+      const decoded = jwt.decode(refreshToken)
+      const {username} = decoded
+      const user = await Users.getUserByUsername(username)
+      const accessToken = buildAccess(user)
+      if (!accessToken) {
+        return res.status(400).json({message: "couldn't get token"})
+      }
+      res.status(200).json(accessToken)
+    }
     res.json(decoded.role);
   } catch (err) {
     next(err);
@@ -115,5 +130,5 @@ module.exports = {
   refreshHandle,
   buildAccess,
   buildRefresh,
-  checkAccess
+  decodeAccess
 };

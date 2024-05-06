@@ -1,4 +1,4 @@
-
+import ImageUpload from './components/user/ImageUpload'
 import Part from './components/part/Part'
 import { useState, createContext, useEffect } from 'react'
 import './App.css'
@@ -80,7 +80,7 @@ function logoutUser() {
 
 
 useEffect(() => {
-    axios.get("http://localhost:9000/auth", {
+    axios.get("http://localhost:9000/auth/check", {
       withCredentials: true,
       baseURL: "http://localhost:9000"
     })
@@ -112,7 +112,7 @@ useEffect(() => {
               <Route element={<Login />} path='/*' />
             </Routes>
             :
-            decodedToken ? 
+            
         <div>
             <Navbar />
             <Routes>
@@ -120,11 +120,9 @@ useEffect(() => {
               {decodedToken.role_id === 3 ? <Route element={<Register />} path='/register' /> : <Route element={<NotAuthorized />} path='/register' />}
               <Route element={<Parts />} path='/parts' />
               <Route element={<Part />} path='/parts/:sku' />
-              <Route element={<Vendors />} path='/vend' />
-              <Route element={<Vendor />} path='/vend/:id' />
             </Routes> 
             </div>
-            : null
+            
             }
             </Factory.Provider>
     </main>

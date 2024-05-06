@@ -11,6 +11,17 @@ async function getPartList(req, res, next) {
     next(err);
   }
 }
+async function addPartToList(req, res, next) {
+  try {
+    const part = {...req.body, material_name: undefined,}
+
+    const files = req.files
+    if (!part) {}
+  } catch (err) {
+    next(err)
+  }
+}
+
 
 module.exports = {
   getPartList
